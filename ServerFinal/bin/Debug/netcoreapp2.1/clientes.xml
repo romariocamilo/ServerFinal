@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ArrayOfCliente xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Cliente>
+    <ClienteId>1</ClienteId>
+    <Apelido>romario</Apelido>
+    <Logado>false</Logado>
+  </Cliente>
+  <Cliente>
+    <ClienteId>2</ClienteId>
+    <Apelido>ricardo</Apelido>
+    <Logado>false</Logado>
+  </Cliente>
+  <Cliente>
+    <ClienteId>3</ClienteId>
+    <Apelido>herbert</Apelido>
+    <Logado>false</Logado>
+  </Cliente>
+</ArrayOfCliente>

@@ -9,3 +9,14 @@ C:\Users\Romario\source\repos\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\Se
 C:\Users\Romario\source\repos\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.dll
 C:\Users\Romario\source\repos\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.pdb
 C:\Users\Romario\source\repos\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.csprojAssemblyReference.cache
+C:\ServerFinal\ServerFinal\bin\Debug\netcoreapp2.1\ServerFinal.deps.json
+C:\ServerFinal\ServerFinal\bin\Debug\netcoreapp2.1\ServerFinal.runtimeconfig.json
+C:\ServerFinal\ServerFinal\bin\Debug\netcoreapp2.1\ServerFinal.runtimeconfig.dev.json
+C:\ServerFinal\ServerFinal\bin\Debug\netcoreapp2.1\ServerFinal.dll
+C:\ServerFinal\ServerFinal\bin\Debug\netcoreapp2.1\ServerFinal.pdb
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.csprojAssemblyReference.cache
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.csproj.CoreCompileInputs.cache
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.AssemblyInfoInputs.cache
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.AssemblyInfo.cs
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.dll
+C:\ServerFinal\ServerFinal\obj\Debug\netcoreapp2.1\ServerFinal.pdb

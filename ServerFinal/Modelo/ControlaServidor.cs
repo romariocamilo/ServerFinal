@@ -12,13 +12,16 @@ namespace ServerFinal.Modelo
     public class ControlaServidor
     {
         Dictionary<string, Socket> dicionarioConexao = new Dictionary<string, Socket>();
+        Dictionary<string, Thread> dicionarioThread = new Dictionary<string, Thread>();
+        List<Cliente> listaClientesAutenticados;
         List<string> listaKeys = new List<string>();
         Queue<string> filaMensagemChat = new Queue<string>();
         Queue<string> filaMensagemConexao = new Queue<string>();
+        Queue<string> filaMensagemRequisicao = new Queue<string>();
         public void LigaServidor()
         {
             ControlaXml oControlaXml = new ControlaXml();
-            List<Cliente> listaClientesAutenticados = new List<Cliente>();
+            listaClientesAutenticados = new List<Cliente>();
             TcpListener servidor = new TcpListener(IPAddress.Parse("127.0.0.1"), 8080);
 
             oControlaXml.ExcreveXML();
@@ -97,43 +100,56 @@ namespace ServerFinal.Modelo
                 return false;
             }
         }
-        public void EscutaConexao(Socket socketConexaoParametro)
+        public void EscutaConexao(Socket socketConexaoParametro, string nomeCliente)
         {
             NetworkStream networkStream = new NetworkStream(socketConexaoParametro);
             BinaryReader leAtual = new BinaryReader(networkStream);
 
             while (true)
             {
-                if (leAtual != null)
+                try
                 {
-                    //ESTRUTURA MENSAGEM
-                    //remetente|tipo de mensagem|conteúdo|destinatário
-                    string mensagemAtual = leAtual.ReadString().ToLowerInvariant();
-                    string[] mensagemAtualQuebrada = mensagemAtual.Split('|');
-                    string tipoMensagem = mensagemAtualQuebrada[1];
-
-                    //O CARA QUE ORGANIZA A FILA TEM QUE FICAR AQUIII BURRO
-                    //NA THREAD QUE ESCUTA BURRO
-
-                    if (mensagemAtual != null)
+                    if (leAtual != null)
                     {
-                        if (tipoMensagem == "conexao")
+                        //ESTRUTURA MENSAGEM
+                        //remetente|tipo de mensagem|conteúdo|destinatário
+                        string mensagemAtual = leAtual.ReadString().ToLowerInvariant();
+                        string[] mensagemAtualQuebrada = mensagemAtual.Split('|');
+                        string tipoMensagem = mensagemAtualQuebrada[1];
+
+                        //O CARA QUE ORGANIZA A FILA TEM QUE FICAR AQUIII BURRO
+                        //NA THREAD QUE ESCUTA BURRO
+
+                        if (mensagemAtual != null)
                         {
-                            filaMensagemConexao.Enqueue(mensagemAtual);
-                            mensagemAtual = null;
-                        }
-                        else if (tipoMensagem == "chat")
-                        {
-                            filaMensagemChat.Enqueue(mensagemAtual);
-                            mensagemAtual = null;
+                            if (tipoMensagem == "conexao")
+                            {
+                                filaMensagemConexao.Enqueue(mensagemAtual);
+                                mensagemAtual = null;
+                            }
+                            else if (tipoMensagem == "chat")
+                            {
+                                filaMensagemChat.Enqueue(mensagemAtual);
+                                mensagemAtual = null;
+                            }
+                            else if (tipoMensagem == "requisicao")
+                            {
+                                filaMensagemRequisicao.Enqueue(mensagemAtual);
+                                mensagemAtual = null;
+                            }
                         }
                     }
+                }
+                catch(Exception ex)
+                {
+                    RemoveConexao(dicionarioConexao, listaClientesAutenticados, listaKeys, dicionarioThread, nomeCliente);
+                    break;
                 }
             }
         }
         public void ExecutaThreadParametrizada()
         {
-            Dictionary<string, Thread> dicionarioThread = new Dictionary<string, Thread>();
+           dicionarioThread = new Dictionary<string, Thread>();
 
             while (true)
             {
@@ -148,11 +164,11 @@ namespace ServerFinal.Modelo
 
                         if (jaExiste == false)
                         {
-                            Thread novaThread = new Thread(new ThreadStart(() => EscutaConexao(dicionarioConexao[keyAtual])));
+                            Thread novaThread = new Thread(new ThreadStart(() => EscutaConexao(dicionarioConexao[keyAtual], keyAtual)));
                             novaThread.Name = "Escuta usuário: " + keyAtual;
 
                             dicionarioThread.Add(keyAtual, novaThread);
-                            dicionarioThread.Last().Value.Start();
+                            dicionarioThread[keyAtual].Start();
                         }
                         Thread.Sleep(500);
                     }
@@ -161,38 +177,65 @@ namespace ServerFinal.Modelo
         }
         public void DescarregaMensagens()
         {
-            while (true)
+            #region cometário
+            //while (true)
+            //{
+            //    //OHHHH FII DUMA VEIA, O CARA QUE ORGANIZA A FILA TEM QUE
+            //    //FICAR NA THREAD QUE ESCUTA BURRO
+
+            //    //if (mensagemAtual != null)
+            //    //{
+            //    //    filaMensagem.Enqueue(mensagemAtual);
+            //    //    mensagemAtual = null;
+            //    //}
+            //    if (filaMensagemConexao.Count > 0)
+            //    {
+            //        string[] mensagemQuebrada = filaMensagemConexao.Dequeue().Split('|');
+            //        Mensagem oMensagem = new Mensagem(mensagemQuebrada[0], mensagemQuebrada[1], mensagemQuebrada[2], mensagemQuebrada[3]);
+
+            //        NetworkStream networkStream = new NetworkStream(dicionarioConexao[oMensagem.destinatario]);
+            //        BinaryWriter escreve = new BinaryWriter(networkStream);
+            //        escreve.Write("ping");
+            //    }
+
+            //    if (filaMensagemChat.Count > 0)
+            //    {
+            //        string[] mensagemQuebrada = filaMensagemChat.Dequeue().Split('|');
+            //        Mensagem oMensagem = new Mensagem(mensagemQuebrada[0], mensagemQuebrada[1], mensagemQuebrada[2], mensagemQuebrada[3]);
+
+            //        NetworkStream networkStream = new NetworkStream(dicionarioConexao[oMensagem.destinatario]);
+            //        BinaryWriter escreve = new BinaryWriter(networkStream);
+            //        escreve.Write("Mensagem de " + oMensagem.remetente + ": " + oMensagem.conteudo);
+            //    }
+            //}
+            #endregion
+
+            Mensagem oMensagem = new Mensagem();
+            oMensagem.TrataMensagem(filaMensagemConexao, filaMensagemChat, filaMensagemRequisicao, dicionarioConexao, listaClientesAutenticados, dicionarioThread, listaKeys);
+        }
+        public void RemoveConexao(Dictionary<string, Socket> dicionarioConexaoRemover, List<Cliente> listaClientesAtualizar, List<string> listaChavesRemover, Dictionary<string, Thread> dicionarioThreadRemover, string keyParaRemover)
+        {
+            try
             {
-                //OHHHH FII DUMA VEIA, O CARA QUE ORGANIZA A FILA TEM QUE
-                //FICAR NA THREAD QUE ESCUTA BURRO
+                dicionarioConexaoRemover.Remove(keyParaRemover);
 
-                //if (mensagemAtual != null)
-                //{
-                //    filaMensagem.Enqueue(mensagemAtual);
-                //    mensagemAtual = null;
-                //}
-                if (filaMensagemConexao.Count > 0)
-                {
-                    string[] mensagemQuebrada = filaMensagemConexao.Dequeue().Split('|');
-                    Mensagem oMensagem = new Mensagem(mensagemQuebrada[0], mensagemQuebrada[1], mensagemQuebrada[2], mensagemQuebrada[3]);
+                Cliente clienteQueDesconectou = listaClientesAtualizar.FirstOrDefault(lqp => lqp.Apelido == keyParaRemover);
+                clienteQueDesconectou.Logado = false;
 
-                    NetworkStream networkStream = new NetworkStream(dicionarioConexao[oMensagem.destinatario]);
-                    BinaryWriter escreve = new BinaryWriter(networkStream);
-                    escreve.Write("ping");
-                }
+                listaChavesRemover.Remove(clienteQueDesconectou.Apelido);
 
-                if (filaMensagemChat.Count > 0)
-                {
-                    string[] mensagemQuebrada = filaMensagemChat.Dequeue().Split('|');
-                    Mensagem oMensagem = new Mensagem(mensagemQuebrada[0], mensagemQuebrada[1], mensagemQuebrada[2], mensagemQuebrada[3]);
+                Thread threadBreak = dicionarioThreadRemover[keyParaRemover];
+                threadBreak.Interrupt();
 
-                    NetworkStream networkStream = new NetworkStream(dicionarioConexao[oMensagem.destinatario]);
-                    BinaryWriter escreve = new BinaryWriter(networkStream);
-                    escreve.Write("Mensagem de " + oMensagem.remetente + ": " + oMensagem.conteudo);
-                }
+                dicionarioThreadRemover.Remove(keyParaRemover);
+
+                Console.WriteLine(keyParaRemover + " desconectou");
+            }
+            catch
+            {
+
             }
         }
-
         //public void TrocaConexao()
         //{
         //    int contador2 = 0;

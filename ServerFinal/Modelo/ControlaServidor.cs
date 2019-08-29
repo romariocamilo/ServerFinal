@@ -22,9 +22,14 @@ namespace ServerFinal.Modelo
         {
             ControlaXml oControlaXml = new ControlaXml();
             listaClientesAutenticados = new List<Cliente>();
-            TcpListener servidor = new TcpListener(IPAddress.Parse("127.0.0.1"), 8080);
 
-            oControlaXml.ExcreveXML();
+            string nome = System.Net.Dns.GetHostName();
+            System.Net.IPAddress[] ip = System.Net.Dns.GetHostAddresses(nome);
+            string ipMaquina = ip[2].ToString();
+
+            TcpListener servidor = new TcpListener(IPAddress.Parse(ipMaquina), 8080);
+
+            //oControlaXml.ExcreveXML();
             listaClientesAutenticados = oControlaXml.LeXML();
 
             Console.WriteLine("Servidor ligado");

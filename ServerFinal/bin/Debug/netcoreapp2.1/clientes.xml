@@ -15,4 +15,14 @@
     <Apelido>herbert</Apelido>
     <Logado>false</Logado>
   </Cliente>
+  <Cliente>
+    <ClienteId>4</ClienteId>
+    <Apelido>erick</Apelido>
+    <Logado>false</Logado>
+  </Cliente>
+  <Cliente>
+    <ClienteId>5</ClienteId>
+    <Apelido>icaro</Apelido>
+    <Logado>false</Logado>
+  </Cliente>
 </ArrayOfCliente>

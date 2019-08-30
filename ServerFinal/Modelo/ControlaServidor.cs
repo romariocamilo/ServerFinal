@@ -27,7 +27,7 @@ namespace ServerFinal.Modelo
             System.Net.IPAddress[] ip = System.Net.Dns.GetHostAddresses(nome);
             string ipMaquina = null;
 
-            if (ip.Length == 3)
+            if (ip.Length == 4)
             {
                 ipMaquina = ip[2].ToString();
             }

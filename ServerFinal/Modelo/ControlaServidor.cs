@@ -25,7 +25,16 @@ namespace ServerFinal.Modelo
 
             string nome = System.Net.Dns.GetHostName();
             System.Net.IPAddress[] ip = System.Net.Dns.GetHostAddresses(nome);
-            string ipMaquina = ip[2].ToString();
+            string ipMaquina = null;
+
+            if (ip.Length == 3)
+            {
+                ipMaquina = ip[2].ToString();
+            }
+            else if (ip.Length == 2)
+            {
+                ipMaquina = ip[1].ToString();
+            }
 
             TcpListener servidor = new TcpListener(IPAddress.Parse(ipMaquina), 8080);
 
@@ -71,12 +80,12 @@ namespace ServerFinal.Modelo
                             }
                             else
                             {
-                                escreve.Write("Você já está logado");
+                                escreve.Write("Você já esta logado em outra maquina");
                             }
                         }
                         else
                         {
-                            escreve.Write("não autenticado");
+                            escreve.Write("recusado");
                             socketConexao.Close();
                             socketStream.Close();
                             le.Close();

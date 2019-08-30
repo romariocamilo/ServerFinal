@@ -42,6 +42,9 @@ namespace ServerFinal.Modelo
                 //    filaMensagem.Enqueue(mensagemAtual);
                 //    mensagemAtual = null;
                 //}
+
+                Thread.Sleep(500);
+
                 if (filaMensagemConexao.Count > 0)
                 {
                     try
@@ -77,7 +80,7 @@ namespace ServerFinal.Modelo
 
                             if (remetente != listaKeys[contador])
                             {
-                                escreve.Write("Mensagem geral de " + oMensagem.remetente + ": " + oMensagem.conteudo);
+                                escreve.Write("Servidor: Mensagem geral de " + oMensagem.remetente + ": " + oMensagem.conteudo);
                             }
                         }
                     }
@@ -94,7 +97,7 @@ namespace ServerFinal.Modelo
                             }
                             else
                             {
-                                escreve.Write("Mensagem pra você mesmo não dá jovenzinho");
+                                escreve.Write("Servidor: Mensagem pra você mesmo não dá jovenzinho");
                             }
                         }
                         else

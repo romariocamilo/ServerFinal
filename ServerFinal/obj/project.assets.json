@@ -688,7 +688,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\romario.souza\\.nuget\\packages\\": {},
+    "C:\\Users\\Romario\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -697,14 +697,14 @@
       "projectUniqueName": "C:\\ServerFinal\\ServerFinal\\ServerFinal.csproj",
       "projectName": "ServerFinal",
       "projectPath": "C:\\ServerFinal\\ServerFinal\\ServerFinal.csproj",
-      "packagesPath": "C:\\Users\\romario.souza\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Romario\\.nuget\\packages\\",
       "outputPath": "C:\\ServerFinal\\ServerFinal\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\romario.souza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Romario\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
